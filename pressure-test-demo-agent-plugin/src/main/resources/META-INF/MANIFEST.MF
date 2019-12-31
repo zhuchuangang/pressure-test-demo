@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Premain-Class: com.songshu.pressure.test.plugin.PluginAgent
+Can-Redefine-Classes: true

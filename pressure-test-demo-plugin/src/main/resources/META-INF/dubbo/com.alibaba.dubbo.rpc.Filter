@@ -1,0 +1,2 @@
+dubboProviderContextFilter=com.songshu.pressure.test.demo.plugin.dubbo.DubboProviderContextFilter
+dubboConsumerContextFilter=com.songshu.pressure.test.demo.plugin.dubbo.DubboConsumerContextFilter

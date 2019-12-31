@@ -1,0 +1,81 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  data:
+    mongodb:
+      host: 127.0.0.1
+      database: test
+      port: 27017
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+      filters: wall
+      initialSize: 10
+      minIdle: 10
+      maxActive: 200
+
+#mybatis
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath*:mybatis/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.songshu.pressure.test.demo
+  global-config:
+    db-config:
+      #不开启大写命名
+      capital-mode: false
+      # 字段验证策略，非空
+      #field-strategy: NOT_NULL
+      #主键类型，该类型为未设置主键类型
+      #id-type: NONE
+      # 逻辑已删除值
+      logic-delete-value: -1
+      # 逻辑未删除值
+      logic-not-delete-value: 0
+      # 表名、是否使用下划线命名，默认数据库表使用下划线命名
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    #配置callSettersOnNulls
+    call-setters-on-nulls: true
+#    interceptors:
+#      - com.songshu.pressure.test.demo.plugin.mybatis.PressureTestInterceptor
+
+
+dubbo:
+  application:
+    name: pressure-test-provider
+    logger: slf4j
+  registry:
+    address: zookeeper://127.0.0.1:2181 #nacos://127.0.0.1:8848
+    dynamic: true
+    client: curator
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    name: dubbo
+    port: 30800
+  consumer:
+    filter: dubboConsumerContextFilter
+    version: 1.0.0
+    check: false
+    timeout: 5000
+    retries: 0
+  provider:
+    filter: dubboProviderContextFilter
+    version: 1.0.0
+    timeout: 5000
+    retries: 0
+
+
+
+#logging
+logging:
+  level:
+    root: INFO

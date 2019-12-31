@@ -1,0 +1,35 @@
+server:
+  port: 9090
+
+dubbo:
+  application:
+    name: pressure-test-customer
+    logger: slf4j
+  registry:
+    address: zookeeper://127.0.0.1:2181 #nacos://127.0.0.1:8848
+    dynamic: true
+    client: curator
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    name: dubbo
+    port: 30900
+  consumer:
+    filter: dubboConsumerContextFilter
+    version: 1.0.0
+    check: false
+    timeout: 5000
+    retries: 0
+  provider:
+    filter: dubboProviderContextFilter
+    version: 1.0.0
+    timeout: 5000
+    retries: 0
+
+
+
+
+#logging
+logging:
+  level:
+    root: INFO
