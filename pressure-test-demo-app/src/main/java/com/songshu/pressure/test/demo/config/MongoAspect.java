@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class MongoAspect {
 
-    @Pointcut("execution(* org.springframework.data.mongodb.core.MongoTemplate.execute(*,*))")
+    @Pointcut("execution(public * org.springframework.data.mongodb.core.MongoTemplate.insert(*,*))")
+    // @Pointcut("within(org.springframework.data.mongodb.core.MongoTemplate)")
     public void logPointCut() {}
-
 
     @Around("logPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object[] args = point.getArgs();
-        args[0]=(String)args[0]+"_test";
+        args[1] = (String)args[1] + "_test";
         Object result = point.proceed(args);
         return result;
 
@@ -29,7 +29,6 @@ public class MongoAspect {
 
     @Pointcut("execution(* com.songshu.pressure.test.demo.controller.*.*(..))")
     public void aaa() {}
-
 
     @Around("aaa()")
     public Object aa(ProceedingJoinPoint point) throws Throwable {
