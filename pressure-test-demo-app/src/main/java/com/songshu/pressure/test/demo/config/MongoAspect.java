@@ -1,5 +1,6 @@
 package com.songshu.pressure.test.demo.config;
 
+import com.songshu.pressure.test.demo.plugin.context.MarkContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,11 +16,41 @@ import org.springframework.stereotype.Component;
 public class MongoAspect {
 
     @Pointcut("execution(public * org.springframework.data.mongodb.core.MongoTemplate.insert(*,*))")
-    // @Pointcut("within(org.springframework.data.mongodb.core.MongoTemplate)")
-    public void logPointCut() {}
+    public void mongoInsertPointCut() {}
 
-    @Around("logPointCut()")
-    public Object around(ProceedingJoinPoint point) throws Throwable {
+    @Around("mongoInsertPointCut()")
+    public Object mongoInsertPointCutAround(ProceedingJoinPoint point) throws Throwable {
+        Object[] args = point.getArgs();
+        Object mark = MarkContext.PRESSUER_TEST_MARK.get();
+        if (mark != null) {
+            args[1] = (String)args[1] + "_test";
+        }
+        Object result = point.proceed(args);
+        return result;
+
+    }
+
+    @Pointcut("execution(public * org.springframework.data.mongodb.core.MongoTemplate.find*(*,*,*))")
+    public void mongoQueryPointCut() {}
+
+    @Around("mongoQueryPointCut()")
+    public Object mongoQueryPointCutAround(ProceedingJoinPoint point) throws Throwable {
+        Object[] args = point.getArgs();
+        Object mark = MarkContext.PRESSUER_TEST_MARK.get();
+        if (mark != null) {
+            args[2] = (String)args[2] + "_test";
+        }
+        Object result = point.proceed(args);
+        return result;
+
+    }
+
+    @Pointcut("execution(public * org.springframework.data.mongodb.core.MongoTemplate.update(*))")
+    // @Pointcut("within(org.springframework.data.mongodb.core.MongoTemplate)")
+    public void mongoUpdatePointCut() {}
+
+    @Around("mongoUpdatePointCut()")
+    public Object mongoUpdatePointCutAround(ProceedingJoinPoint point) throws Throwable {
         Object[] args = point.getArgs();
         args[1] = (String)args[1] + "_test";
         Object result = point.proceed(args);
